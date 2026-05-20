@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Project — Milestone Tracker{% endblock %}
+
+{% block content %}
+{% if project %}
+<section class="card">
+  <div class="dash-header">
+    <div>
+      <h2>{{ project.name }}</h2>
+      <p class="help-text" style="margin: 0.35rem 0 0">Project manager — submit completed milestones with actual costs for verification.</p>
+    </div>
+    <button type="button" id="reset-project" class="btn btn-secondary btn-sm">Start over</button>
+  </div>
+
+  <div class="stats-grid {% if project.is_complete %}stats-grid-4{% else %}stats-grid-3{% endif %}">
+    <div class="stat">
+      <div class="value">{{ project.total_budget | currency }}</div>
+      <div class="label">Total budget</div>
+    </div>
+    <div class="stat released">
+      <div class="value">{{ project.total_released | currency }}</div>
+      <div class="label">Released</div>
+    </div>
+    <div class="stat">
+      <div class="value">{{ project.milestones_verified }} / {{ project.milestones_total }}</div>
+      <div class="label">Verified</div>
+    </div>
+    {% if project.is_complete %}
+    <div class="stat returned">
+      <div class="value">{% if project.is_over_budget %}{{ project.total_deficit | currency }}{% else %}{{ project.total_returned | currency }}{% endif %}</div>
+      <div class="label">{% if project.is_over_budget %}Over budget{% else %}Returned to investors{% endif %}</div>
+    </div>
+    {% endif %}
+  </div>
+
+  {% if project.is_complete and project.is_over_budget %}
+  <div class="banner banner-warning">
+    Project complete and over budget by {{ project.total_deficit | currency }}. No funds returned to investors.
+  </div>
+  {% elif project.is_complete and project.total_returned > 0 %}
+  <div class="banner banner-success">
+    Project complete. {{ project.total_returned | currency }} returned to investors.
+  </div>
+  {% elif project.is_complete %}
+  <div class="banner banner-success">
+    Project complete. Project spent within budget.
+  </div>
+  {% endif %}
+
+  <h2 class="subsection-title">Milestones</h2>
+  <ul id="pm-milestone-list" class="milestone-list"></ul>
+
+  <div class="actions">
+    <a href="{{ url_for('dashboard_page') }}" class="btn btn-secondary">Dashboard</a>
+    <a href="{{ url_for('approvals_page') }}" class="btn btn-primary">Approvals</a>
+  </div>
+</section>
+{% else %}
+<section class="card">
+  <h2>Create project</h2>
+  <form id="project-form" novalidate>
+    <label for="project-name">Project name</label>
+    <input type="text" id="project-name" placeholder="e.g. Al-Noor Community Center" autocomplete="off" />
+
+    <label for="total-budget">Total budget raised (USD)</label>
+    <input type="text" id="total-budget" inputmode="decimal" placeholder="500000" autocomplete="off" />
+
+    <h2 class="subsection-title">Milestones</h2>
+    <div id="milestones-container"></div>
+    <p id="pct-hint" class="pct-hint">Budget percentages sum: 0% (must equal 100%)</p>
+
+    <div class="actions">
+      <button type="button" id="add-milestone" class="btn btn-secondary">+ Add milestone</button>
+      <button type="submit" class="btn btn-primary">Create project</button>
+    </div>
+  </form>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if project %}
+<script id="initial-project" type="application/json">{{ project | tojson }}</script>
+{% endif %}
+<script src="{{ url_for('static', filename='project.js') }}"></script>
+{% endblock %}

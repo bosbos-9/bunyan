@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Milestone Tracker{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1><a href="{{ url_for('project_page') }}" class="brand-link">Milestone Tracker</a></h1>
+        <p>Simulated escrow and multi-party verification for a single construction project.</p>
+        {% if project %}
+        <nav class="main-nav" aria-label="Main">
+          <a href="{{ url_for('project_page') }}" class="nav-link{% if active_page == 'project' %} active{% endif %}">Project</a>
+          <a href="{{ url_for('dashboard_page') }}" class="nav-link{% if active_page == 'dashboard' %} active{% endif %}">Dashboard</a>
+          <a href="{{ url_for('approvals_page') }}" class="nav-link{% if active_page == 'approvals' %} active{% endif %}">Approvals</a>
+        </nav>
+        {% endif %}
+      </header>
+
+      {% block content %}{% endblock %}
+    </div>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+
+    <script src="{{ url_for('static', filename='common.js') }}"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

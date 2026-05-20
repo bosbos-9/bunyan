@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Approvals — Milestone Tracker{% endblock %}
+
+{% block content %}
+<section class="card">
+  <div class="dash-header">
+    <div>
+      <h2>Milestone approvals</h2>
+      <p class="help-text" style="margin: 0.35rem 0 0">{{ project.name }} — only PM-submitted milestones appear here.</p>
+    </div>
+  </div>
+
+  <div id="approvals-empty" class="empty-state hidden">
+    <p>No milestones awaiting verification.</p>
+    <p class="help-text">The project manager must submit a milestone with its actual cost on the Project page first.</p>
+    <a href="{{ url_for('project_page') }}" class="btn btn-primary">Go to Project</a>
+  </div>
+
+  <ul id="milestone-list" class="milestone-list"></ul>
+</section>
+{% endblock %}
+{% block scripts %}
+<script id="initial-project" type="application/json">{{ project | tojson }}</script>
+<script src="{{ url_for('static', filename='approvals.js') }}"></script>
+{% endblock %}
+
