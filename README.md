@@ -1,14 +1,15 @@
 # Milestone Tracker
 
-A small Flask web application that simulates milestone-based escrow for a single construction project. Create a project with a budget and milestones, collect three independent approvals per milestone (Engineer, REGA Inspector, Trustee), and watch funds move from **in escrow** to **released** on the dashboard.
+A small Flask web application that simulates milestone-based escrow for a single construction project. Create a project with a budget and milestones, collect three independent approvals per milestone (Engineer, REGA Inspector, Trustee), and watch funds move from in escrow to released on the dashboard.
 
 Built for the Bunyan engineering assessment (Task 2).
 
 ## How to run locally
 
-**Requirements:** Python 3.10+
+Requirements: Python 3.10+
 
 ### macOS / Linux
+
 ```bash
 git clone git@github.com:bosbos-9/bunyan.git
 cd bunyan
@@ -16,26 +17,29 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 python run.py
+```
 
+### Windows
+
+```powershell
 git clone git@github.com:bosbos-9/bunyan.git
 cd bunyan
 py -3 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 python run.py
+```
 
 Open local link in your browser.
 
-### Pages
+## Pages
 
 | URL | Purpose |
 |-----|---------|
 | `/` | **Project** — create a project or view project overview |
-
 | `/approvals` | **Approvals** — verify milestones and track progress(Engineer, REGA, Trustee) |
 
-
-### Quick walkthrough
+## Quick walkthrough
 
 1. Create a project with milestones set your budget and milestones.
 2. On Project page, the PM submits each completed milestone with its actual cost.
@@ -52,7 +56,6 @@ Open local link in your browser.
 - JavaScript handles interactive UI only: dynamic create form, submit/approve without full page reloads, pie chart, toasts.
 - flask was chosen for faster implemention as my skills in pyhthon is higher
 - as for interacting with frontend elements JS was used.
-
 
 ### Data model
 
@@ -83,22 +86,22 @@ Open local link in your browser.
 ## AI use disclosure
 
 This project was built with assistance from Cursor(AI pair programming). Architecture, validation rules, and UI flow follow the assessment brief; Cursor helped scaffold files and styling. Escrow logic and the three-role verification gate were reviewed and are documented above.
-to do this project in a quick manner Cursor modified most UI element and functions to ensure code modalraty 
+to do this project in a quick manner Cursor modified most UI element and functions to ensure code modalraty
 
 ## Project structure
 
-```
+```text
 bunyan/
 ├── app/
-│   ├── __init__.py      # Flask app factory
-│   ├── models.py        # Project/Milestone + budget rules
-│   ├── store.py         # In-memory state + validation
-│   ├── api_helpers.py   # Shared API error/response helpers
-│   └── routes.py        # Pages + JSON endpoints
+│   ├── __init__.py # Flask app factory
+│   ├── models.py # Project/Milestone + budget rules
+│   ├── store.py # In-memory state + validation
+│   ├── api_helpers.py # Shared API error/response helpers
+│   └── routes.py # Pages + JSON endpoints
 ├── static/
-│   ├── common.js        # Shared UI + fetch helpers
-│   ├── project.js       # Create form + PM milestones
-│   ├── approvals.js     # Approval workflow
+│   ├── common.js # Shared UI + fetch helpers
+│   ├── project.js # Create form + PM milestones
+│   ├── approvals.js # Approval workflow
 │   └── style.css
 ├── templates/
 │   └── index.html
