@@ -102,6 +102,7 @@ bunyan/
 │   ├── common.js # Shared UI + fetch helpers
 │   ├── project.js # Create form + PM milestones
 │   ├── approvals.js # Approval workflow
+│   ├── dashboard.js # pi chart and progress bar
 │   └── style.css
 ├── templates/
 │   └── index.html
