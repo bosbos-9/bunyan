@@ -10,14 +10,14 @@ Built for the Bunyan engineering assessment (Task 2).
 
 ### macOS / Linux
 ```bash
-git clone <your-repo-url>
+git clone git@github.com:bosbos-9/bunyan.git
 cd bunyan
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 python run.py
 
-git clone <your-repo-url>
+git clone git@github.com:bosbos-9/bunyan.git
 cd bunyan
 py -3 -m venv .venv
 .\.venv\Scripts\Activate.ps1
@@ -31,8 +31,8 @@ Open local link in your browser.
 | URL | Purpose |
 |-----|---------|
 | `/` | **Project** — create a project or view project overview |
-| `/dashboard` | **Dashboard** — budget totals and milestone progress bar |
-| `/approvals` | **Approvals** — verify milestones (Engineer, REGA, Trustee) |
+
+| `/approvals` | **Approvals** — verify milestones and track progress(Engineer, REGA, Trustee) |
 
 
 ### Quick walkthrough
@@ -41,7 +41,7 @@ Open local link in your browser.
 2. On Project page, the PM submits each completed milestone with its actual cost.
 3. Submitted milestones appear on approvals for Engineer, REGA Inspector, and Trustee.
 4. On full approval, actual cost is released and remaining amount is updated.
-5. Dashboard page tracks raised, released, and escrow. Surplus returns to investors and appear only when all milestones are verified and total spend is under budget no financial functions happening this is just a dmeonstration.
+5. Dashboard tracks raised, released, and escrow. Surplus returns to investors and appear only when all milestones are verified and total spend is under budget no financial functions happening this is just a dmeonstration.
 6. Start over clears in-memory state.
 
 ## Design decisions
@@ -75,7 +75,6 @@ Open local link in your browser.
 
 | Method | Path | Purpose |
 |--------|------|---------|
-| `GET` | `/`, `/dashboard`, `/approvals` | Server-rendered pages |
 | `POST` | `/api/project` | Create project (JSON) |
 | `POST` | `/api/milestones/<index>/submit` | PM submits `{"actual_cost": 40000}` |
 | `POST` | `/api/milestones/<index>/approve` | `{"role": "engineer"}` etc. |
@@ -84,7 +83,7 @@ Open local link in your browser.
 ## AI use disclosure
 
 This project was built with assistance from Cursor(AI pair programming). Architecture, validation rules, and UI flow follow the assessment brief; Cursor helped scaffold files and styling. Escrow logic and the three-role verification gate were reviewed and are documented above.
-to do this project in a quick manner Cursor modified most UI element and functions to ensure code modalraty
+to do this project in a quick manner Cursor modified most UI element and functions to ensure code modalraty 
 
 ## Project structure
 
@@ -100,7 +99,6 @@ bunyan/
 │   ├── common.js        # Shared UI + fetch helpers
 │   ├── project.js       # Create form + PM milestones
 │   ├── approvals.js     # Approval workflow
-│   ├── dashboard.js     # Chart + progress bar
 │   └── style.css
 ├── templates/
 │   └── index.html
