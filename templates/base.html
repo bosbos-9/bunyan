@@ -13,11 +13,10 @@
     <div class="container">
       <header>
         <h1><a href="{{ url_for('project_page') }}" class="brand-link">Milestone Tracker</a></h1>
-        <p>Simulated escrow and multi-party verification for a single construction project.</p>
+        <p> Escrow and multi-party verification for a single construction project.</p>
         {% if project %}
         <nav class="main-nav" aria-label="Main">
           <a href="{{ url_for('project_page') }}" class="nav-link{% if active_page == 'project' %} active{% endif %}">Project</a>
-          <a href="{{ url_for('dashboard_page') }}" class="nav-link{% if active_page == 'dashboard' %} active{% endif %}">Dashboard</a>
           <a href="{{ url_for('approvals_page') }}" class="nav-link{% if active_page == 'approvals' %} active{% endif %}">Approvals</a>
         </nav>
         {% endif %}

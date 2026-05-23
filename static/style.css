@@ -39,7 +39,6 @@ body {
 header {
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--border);
 }
 
 header h1 {
@@ -362,6 +361,7 @@ input[type="date"] {
   margin: 1.5rem 0;
   padding-top: 1.25rem;
   border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
 .chart-layout {
@@ -504,21 +504,82 @@ input[type="date"] {
   border: 1px solid var(--border);
 }
 
+.role-toggle-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+ 
+}
+
+.role-toggle-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.role-toggle {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0;
+  padding: 0.2rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.role-toggle-btn {
+  padding: 0.45rem 0.85rem;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s, box-shadow 0.15s;
+}
+
+.role-toggle-btn:hover {
+  color: var(--text);
+}
+
+.role-toggle-btn.active {
+  color: #fff;
+  background: var(--accent);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12);
+}
+
+.approval-progress {
+  margin: 0.5rem 0 0;
+}
+
 .approvals {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .approval-chip {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   gap: 0.4rem;
-  padding: 0.4rem 0.65rem;
+  padding: 0.5rem 0.65rem;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 6px;
   font-size: 0.8rem;
+  min-width: 12rem;
+  max-width: 18rem;
+}
+
+.approval-chip-label {
+  font-weight: 600;
 }
 
 .approval-chip.approved {

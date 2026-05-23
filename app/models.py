@@ -28,7 +28,7 @@ class Milestone:
     actual_cost: float | None = None
     approvals: dict[str, bool] = field(
         default_factory=lambda: {role: False for role in ALL_ROLES}
-    )
+    )  
 
     @property
     def is_verified(self) -> bool:
@@ -49,6 +49,7 @@ class Milestone:
             "actual_cost": self.actual_cost,
             "approvals": dict(self.approvals),
             "is_verified": self.is_verified,
+        
         }
 
 

@@ -132,20 +132,24 @@ function verifiedFundDetailHtml(milestone, project) {
   }
   return detail;
 }
-//return the HTML for the approval chips
-function buildApprovalChipsHtml(milestone, index) {
-  return Object.entries(milestone.approvals)
+//return the HTML for the approval chips (optional activeRole shows one role only)
+function buildApprovalChipsHtml(milestone, index, activeRole = null) {
+  const entries = Object.entries(milestone.approvals).filter(
+    ([role]) => !activeRole || role === activeRole
+  );
+  return entries
     .map(([role, approved]) => {
       const label = ROLE_LABELS[role] || role;
       if (approved) {
-        return `<span class="approval-chip approved">${label} ✓</span>`;
+        return `<span class="approval-chip approved">
+          <span class="approval-chip-label">${label} ✓</span>
+        </span>`;
       }
       return `<span class="approval-chip">
-        <span>${label}</span>
         <button type="button" class="btn btn-primary btn-sm approve-btn" data-index="${index}" data-role="${role}">Approve</button>
       </span>`;
     })
-    .join("");
+    
 }
 //return the HTML for the verification toast message
 function verificationToastMessage(milestone, project) {

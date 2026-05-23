@@ -35,9 +35,6 @@ def register_routes(app: Flask) -> None:
             active_page="project",
         )
 
-    @app.get("/dashboard")
-    def dashboard_page():
-        return render_with_project("dashboard.html", "dashboard")
 
     @app.get("/approvals")
     def approvals_page():
@@ -98,11 +95,12 @@ def register_routes(app: Flask) -> None:
         if not milestone:
             return json_error("Milestone not found", 404)
 
-        if not milestone.submitted:
-            return json_error("Milestone must be submitted by the project manager first", 400)
-
+      
         body = request.get_json(silent=True) or {}
         role = body.get("role")
+        if role not in ALL_ROLES:
+            return json_error("Invalid role", 400)
+
         if not milestone.is_verified:
             milestone.approvals[role] = True
 

@@ -243,7 +243,7 @@ async function createProject(event) {
       showToast(apiError(data), true);
       return;
     }
-    window.location.href = "/dashboard";
+    window.location.href = "/approvals";
   } catch {
     showToast("Network error — is the server running?", true);
   }

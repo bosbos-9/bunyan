@@ -1,5 +1,43 @@
 /** Approvals page — only PM-submitted milestones awaiting verification. */
 
+const APPROVAL_ROLES = ["engineer", "rega_inspector", "trustee"];
+
+let activeApprovalRole =
+  sessionStorage.getItem("approvalRole") || APPROVAL_ROLES[0];
+let currentProject = null;
+
+function approvalProgressText(milestone) {
+  const done = Object.values(milestone.approvals).filter(Boolean).length;
+  const total = Object.keys(milestone.approvals).length;
+  return `${done} of ${total} approvals complete`;
+}
+
+function updateRoleToggleUi() {
+  document.querySelectorAll(".role-toggle-btn").forEach((button) => {
+    const isActive = button.dataset.role === activeApprovalRole;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-selected", isActive ? "true" : "false");
+  });
+}
+
+function setActiveApprovalRole(role) {
+  if (!APPROVAL_ROLES.includes(role)) return;
+  activeApprovalRole = role;
+  sessionStorage.setItem("approvalRole", role);
+  updateRoleToggleUi();
+  if (currentProject) renderApprovals(currentProject);
+}
+
+function initRoleToggle() {
+  const toggle = document.getElementById("role-toggle");
+  if (!toggle) return;
+
+  toggle.querySelectorAll(".role-toggle-btn").forEach((button) => {
+    button.addEventListener("click", () => setActiveApprovalRole(button.dataset.role));
+  });
+  updateRoleToggleUi();
+}
+
 function pendingMilestones(project) {
   return project.milestones
     .map((milestone, index) => ({ milestone, index }))
@@ -13,22 +51,23 @@ function buildApprovalItemHtml({ milestone, index }) {
       <div class="milestone-header">
         <div>
           <h3>${escapeHtml(milestone.name)}</h3>
-          <div class="milestone-meta">
-            Due ${milestone.expected_completion_date} ·
-            Allocated ${formatCurrency(milestone.allocated_amount)} ·
+           <span class="badge badge-review">Pending</span>
+          <div class="milestone-meta"> 
+            Due ${milestone.expected_completion_date} <br>
+            Allocated ${formatCurrency(milestone.allocated_amount)} <br>
             Actual cost ${formatCurrency(milestone.actual_cost)}
-          </div>
-          <div class="milestone-meta">${approvalFundLineHtml(milestone)}</div>
-        </div>
-        <span class="badge badge-review">Pending</span>
+        
       </div>
-      <div class="approvals">${buildApprovalChipsHtml(milestone, index)}</div>
+      <p class="milestone-meta approval-progress">${approvalProgressText(milestone)}</p>
+      <div class="approvals">${buildApprovalChipsHtml(milestone, index, activeApprovalRole)}</div>
+      
     </li>
   `;
 }
 
 //render the approvals page
 function renderApprovals(project) {
+  currentProject = project;
   const list = document.getElementById("milestone-list");
   const empty = document.getElementById("approvals-empty");
   if (!list) return;
@@ -55,7 +94,6 @@ function renderApprovals(project) {
 
 async function approveMilestone(index, role) {
   try {
-
     const { response, data } = await postJson(`/api/milestones/${index}/approve`, { role });
     if (!response.ok) {
       showToast(apiError(data), true);
@@ -65,6 +103,7 @@ async function approveMilestone(index, role) {
     const milestone = data.project.milestones[index];
     if (milestone.is_verified) {
       showToast(verificationToastMessage(milestone, data.project));
+      window.location.reload();
     }
 
     renderApprovals(data.project);
@@ -74,6 +113,7 @@ async function approveMilestone(index, role) {
 }
 //listen for the DOM content loaded event
 document.addEventListener("DOMContentLoaded", () => {
+  initRoleToggle();
   const project = readInitialProject();
   if (project) renderApprovals(project);
 });
